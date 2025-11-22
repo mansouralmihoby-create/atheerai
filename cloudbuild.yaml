@@ -1,0 +1,16 @@
+steps:
+- name: "python:3.11"
+  id: "Install dependencies"
+  entrypoint: "bash"
+  args:
+  - -c
+  - |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+
+- name: "gcr.io/cloud-builders/docker"
+  id: "Build image"
+  args: ["build", "-t", "gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA", "."]
+
+images:
+- "gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA"
